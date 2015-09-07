@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Rentall</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blankFrag">Blank Frag</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Closed</string>
+    <string name="username_txt">Enter your username</string>
+    <string name="pwd_txt">Enter your password</string>
+    <string name="signup">Sign Up!</string>
+    <string name="signin">Login!</string>
+    <string name="signup_hint">Enter a username</string>
+    <string name="signup_email_hint">Enter an email</string>
+    <string name="pwdhint">Enter your password</string>
+    <string name="cfpwdhint">Confirm your password</string>
+    <string name="title_activity_login_page">LoginPageActivity</string>
+    <string name="title_activity_sign_up">SignUp</string>
+    <string name="address_hint">Enter a pickup address</string>
+    <string name="confirm">Rent it out!</string>
+    <string name="cancel">Take another picture?</string>
+    <string name="item_name_hint">Name your item</string>
+    <string name="rent_expected_hint">Enter rent/month expected</string>
+    <string name="title_activity_listing">ListingActivity</string>
+    <string name="name_hint">First Last Name</string>
+    <string name="addr_hint">Address</string>
+    <string name="email_hint">Email</string>
+    <string name="save_button">Save</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile_edit">ProfileEdit</string>
+
+</resources>
