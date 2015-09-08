@@ -18,14 +18,14 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 
-public class EditProfile extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     private static Button save_btn;
     private EditText userdisplay;
     private EditText emaildisplay;
     private EditText addressdisplay;
 
-    public EditProfile() {
+    public EditProfileFragment() {
         // Required empty public constructor
     }
 

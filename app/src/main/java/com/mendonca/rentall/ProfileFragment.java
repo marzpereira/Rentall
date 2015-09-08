@@ -1,18 +1,19 @@
 package com.mendonca.rentall;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.ParseQuery;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 
@@ -21,6 +22,7 @@ public class ProfileFragment extends android.app.Fragment {
 
     private static final String PROFILE_VIEW_TAG="PROFILE_VIEW_TAG";
     private ImageButton editProfile_btn;
+    private ImageView profilePicdisplay;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -34,6 +36,25 @@ public class ProfileFragment extends android.app.Fragment {
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         ParseUser currentUser= ParseUser.getCurrentUser();
+
+        profilePicdisplay = (ImageView)view.findViewById(R.id.profile_pic_display);
+        //set image
+        ParseFile imageFile = currentUser.getParseFile("profilepic");
+
+        if (imageFile != null) {
+
+            imageFile.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    if (e == null) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        profilePicdisplay.setImageBitmap(bitmap);
+                    } else {
+                        System.out.println("Error getting image bmp");
+                    }
+                }
+            });
+        }
 
         TextView userdisplay=(TextView)view.findViewById(R.id.pUserName);
         userdisplay.setText(currentUser.getString("name"));
@@ -59,7 +80,7 @@ public class ProfileFragment extends android.app.Fragment {
     private void UpdateProfile(){
         /*FragmentManager fragmentManager = getActivity().getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainContent,new EditProfile()).addToBackStack(PROFILE_VIEW_TAG).commit();*/
-        Intent intent=new Intent(getActivity(),ProfileEdit.class);
+        Intent intent=new Intent(getActivity(),ProfileEditActivity.class);
         startActivity(intent);
     }
 

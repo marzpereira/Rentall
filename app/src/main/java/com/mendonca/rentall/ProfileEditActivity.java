@@ -11,24 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 
 import com.parse.GetDataCallback;
@@ -37,17 +27,18 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ProfileEdit extends AppCompatActivity {
+public class ProfileEditActivity extends AppCompatActivity {
 
     private static Button save_btn;
     private EditText userdisplay;
     private EditText emaildisplay;
     private EditText addressdisplay;
-    private ImageView editProfilePic;
+    private ImageView profilePicdisplay;
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private Uri fileUri;
@@ -65,24 +56,27 @@ public class ProfileEdit extends AppCompatActivity {
 
         ParseUser currentUser = ParseUser.getCurrentUser();
 
-        editProfilePic = (ImageButton) findViewById(R.id.profile_pic);
+        profilePicdisplay = (ImageView) findViewById(R.id.profile_pic);
 
         //set image
-        ParseFile imageFile=mRentList.getPhotoFile();
+        ParseFile imageFile = currentUser.getParseFile("profilepic");
 
-        imageFile.getDataInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] bytes, ParseException e) {
-                if (e == null) {
-                    Bitmap bitmap= BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    item_preview.setImageBitmap(bitmap);
-                } else {
-                    System.out.println("Error getting image bmp");
+        if (imageFile != null) {
+
+            imageFile.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    if (e == null) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        profilePicdisplay.setImageBitmap(bitmap);
+                    } else {
+                        System.out.println("Error getting image bmp");
+                    }
                 }
-            }
-        });
-        
-        editProfilePic.setOnClickListener(new View.OnClickListener() {
+            });
+        }
+
+        profilePicdisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UpdatePic();
@@ -129,7 +123,7 @@ public class ProfileEdit extends AppCompatActivity {
 
         dlg.dismiss();
         // start the image capture Intent
-        ProfileEdit.this.startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        ProfileEditActivity.this.startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
     private void saveProfile() {
@@ -138,6 +132,18 @@ public class ProfileEdit extends AppCompatActivity {
         if (cUser == null)
             System.out.println("obj is null");
 
+        //Set photo
+        Bitmap photo=BitmapFactory.decodeFile(filePath.getAbsolutePath());
+        Bitmap scaled=Bitmap.createScaledBitmap(photo,200,200*photo.getHeight()/photo.getWidth(),false);
+
+        ByteArrayOutputStream stream_photo = new ByteArrayOutputStream();
+        scaled.compress(Bitmap.CompressFormat.JPEG,100,stream_photo);
+        byte[] photo_byte=stream_photo.toByteArray();
+
+        ParseFile photoParse=new ParseFile("photo.jpeg",photo_byte);
+        photoParse.saveInBackground();
+
+        cUser.put("profilepic", photoParse);
         cUser.put("name", userdisplay.getText().toString());
         cUser.setEmail(emaildisplay.getText().toString());
         cUser.put("homeAddress", addressdisplay.getText().toString());
@@ -147,7 +153,7 @@ public class ProfileEdit extends AppCompatActivity {
                 if (e == null) {
                     getFragmentManager().popBackStack();
                 } else {
-                    Toast.makeText(ProfileEdit.this, "Error saving" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProfileEditActivity.this, "Error saving" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -218,8 +224,8 @@ public class ProfileEdit extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
 
                 //Set image to preview in fragment
-                editProfilePic=(ImageView)findViewById(R.id.rent_icon);
-                editProfilePic.setImageBitmap(decodeSampledBitmapFromFile(filePath.getAbsolutePath(), 500, 250));
+                profilePicdisplay=(ImageView)findViewById(R.id.profile_pic);
+                profilePicdisplay.setImageBitmap(decodeSampledBitmapFromFile(filePath.getAbsolutePath(), 500, 250));
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // User cancelled the image capture

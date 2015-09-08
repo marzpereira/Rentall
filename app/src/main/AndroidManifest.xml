@@ -51,7 +51,7 @@
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
-            android:name=".ProfileEdit"
+            android:name=".ProfileEditActivity"
             android:label="@string/title_activity_profile_edit" >
         </activity>
     </application>

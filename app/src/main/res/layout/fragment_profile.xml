@@ -12,6 +12,21 @@
     <RelativeLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/profile_pic_display"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_camera_alt_black_36dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+        </ImageView>
+    </RelativeLayout>
+
+
+    <RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView android:id="@+id/pUserName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -91,6 +91,7 @@ public class SignUp extends AppCompatActivity {
                 user.setEmail(email.getText().toString());
                 user.put("homeAddress", "");
                 user.put("name", "");
+                user.put("profilepic","");
 
                 //Call parse signup
                 user.signUpInBackground(new SignUpCallback() {
