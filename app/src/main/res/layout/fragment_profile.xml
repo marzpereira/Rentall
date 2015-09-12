@@ -16,7 +16,7 @@
             android:id="@+id/profile_pic_display"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:src="@drawable/ic_camera_alt_black_36dp"
+            android:src="@drawable/ic_account_circle_black_36dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true">
 

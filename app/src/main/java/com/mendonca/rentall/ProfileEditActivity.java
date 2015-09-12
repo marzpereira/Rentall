@@ -133,17 +133,19 @@ public class ProfileEditActivity extends AppCompatActivity {
             System.out.println("obj is null");
 
         //Set photo
-        Bitmap photo=BitmapFactory.decodeFile(filePath.getAbsolutePath());
-        Bitmap scaled=Bitmap.createScaledBitmap(photo,200,200*photo.getHeight()/photo.getWidth(),false);
+        if(filePath != null) {
+            Bitmap photo = BitmapFactory.decodeFile(filePath.getAbsolutePath());
+            Bitmap scaled = Bitmap.createScaledBitmap(photo, 200, 200 * photo.getHeight() / photo.getWidth(), false);
 
-        ByteArrayOutputStream stream_photo = new ByteArrayOutputStream();
-        scaled.compress(Bitmap.CompressFormat.JPEG,100,stream_photo);
-        byte[] photo_byte=stream_photo.toByteArray();
+            ByteArrayOutputStream stream_photo = new ByteArrayOutputStream();
+            scaled.compress(Bitmap.CompressFormat.JPEG, 100, stream_photo);
+            byte[] photo_byte = stream_photo.toByteArray();
 
-        ParseFile photoParse=new ParseFile("photo.jpeg",photo_byte);
-        photoParse.saveInBackground();
+            ParseFile photoParse = new ParseFile("photo.jpeg", photo_byte);
+            photoParse.saveInBackground();
 
-        cUser.put("profilepic", photoParse);
+            cUser.put("profilepic", photoParse);
+        }
         cUser.put("name", userdisplay.getText().toString());
         cUser.setEmail(emaildisplay.getText().toString());
         cUser.put("homeAddress", addressdisplay.getText().toString());
@@ -151,7 +153,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    getFragmentManager().popBackStack();
+                    finish();
                 } else {
                     Toast.makeText(ProfileEditActivity.this, "Error saving" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -225,6 +227,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
                 //Set image to preview in fragment
                 profilePicdisplay=(ImageView)findViewById(R.id.profile_pic);
+                System.out.println("path" + filePath.getAbsolutePath());
                 profilePicdisplay.setImageBitmap(decodeSampledBitmapFromFile(filePath.getAbsolutePath(), 500, 250));
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
